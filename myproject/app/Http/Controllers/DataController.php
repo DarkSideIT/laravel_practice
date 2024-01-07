@@ -33,8 +33,8 @@ class DataController extends Controller
         $fileName = uniqid('data_') . '.json';
         Storage::put('data/' . $fileName, json_encode($data));
 
-
-        return redirect('/form' -> with('success', 'Data uploaded successfully!'));
+        
+        return redirect('/form') -> with('success', 'Data uploaded successfully!');
     }
 
 
