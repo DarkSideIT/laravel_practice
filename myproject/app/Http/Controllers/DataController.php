@@ -5,49 +5,60 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Student;
+use App\Models\Category;
+use App\Http\Resources\StudentResource; 
 
 class DataController extends Controller
 {
-    public function showForm(){
-        return view('form');
-    }
+    public function showStudents()
+{
+    $students = Student::all();
+    return StudentResource::collection($students);
+}
 
+public function showStudent($id)
+{
+    $student = Student::findOrFail($id);
+    return new StudentResource($student);
+}
 
-    public function processData(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'age' => 'required|integer',
-            'univercity' => 'required|string|max:255',
-            'faculty' => 'required|string|max:255',
-        ]);
+public function storeStudent(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'age' => 'required|integer',
+        'university' => 'required|string|max:255',
+        'faculty' => 'required|string|max:255',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect('/form')
-                ->withErrors($validator)
-                ->withInput();
-        }
+    $student = Student::create($request->all());
 
+    return new StudentResource($student);
+}
 
-        $data = $request->all();
-        $fileName = uniqid('data_') . '.json';
-        Storage::put('data/' . $fileName, json_encode($data));
+public function updateStudent(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'age' => 'required|integer',
+        'university' => 'required|string|max:255',
+        'faculty' => 'required|string|max:255',
+    ]);
 
-        
-        return redirect('/form') -> with('success', 'Data uploaded successfully!');
-    }
+    $student = Student::findOrFail($id);
+    $student->update($request->all());
 
+    return new StudentResource($student);
+}
 
-    public function showDataTable(){
-        $files = Storage::files('data');
-        $data = [];
+public function deleteStudent($id)
+{
+    $student = Student::findOrFail($id);
+    $student->delete();
 
-
-        foreach ($files as $file) {
-            $data[] = json_decode(Storage::get($file), true);
-        }
-
-
-        return view('data_table', ['data' => $data]);
-    }
+    return response()->json(['message' => 'Студент удален успешно']);
+}
 }
