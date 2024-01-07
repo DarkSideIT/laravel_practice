@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
 
+use App\Http\Controllers\FormController;
+use App\Http\Resources\StudentResource;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,10 +23,16 @@ Route::get('/', function () {
 
 
 
-Route::get('/form', [DataController::class, 'showForm']);
+Route::get('/students', [FormController::class, 'showStudents'])->name('students.index');
 
 
-Route::post('/form', [DataController::class, 'processData']);
+Route::get('/students/{id}', [FormController::class, 'showStudent'])->name('students.show');
 
 
-Route::get('/data-table', [DataController::class, 'showDataTable']);
+Route::post('/students', [FormController::class, 'storeStudent'])->name('students.store');
+
+
+Route::put('/students/{id}', [FormController::class, 'updateStudent'])->name('students.update');
+
+
+Route::delete('/students/{id}', [FormController::class, 'deleteStudent'])->name('students.delete');
