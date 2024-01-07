@@ -31,6 +31,15 @@
         <input type="text" name="faculty" value="{{ old('faculty') }}">
         @error('faculty')<span class="text-danger">{{ $message }}</span>@enderror
 
+        <label for="category_id">Категория:</label>
+        <select name="category_id">
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+        @error('category_id')<span class="text-danger">{{ $message }}</span>@enderror
+
+
         <button type="submit">Отправить</button>
     </form>
 

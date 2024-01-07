@@ -2,38 +2,49 @@
 
 @section('content')
     <h2>Таблица данных</h2>
+
     <nav>
-            <ul>
-                <li><a href="/form">Форма заполнения</a></li>
-                <li><a href="/data-table">Студенты</a></li>
-            </ul>
-        </nav>
-    @if(count($data) > 0)
-        <table>
+        <ul>
+            <li><a href="{{ route('students.create') }}">Форма заполнения</a></li>
+            <li><a href="{{ route('students.index') }}">Студенты</a></li>
+        </ul>
+    </nav>
+
+    <div class="table-container">
+        @if(count($data) > 0)
+            <table>
             <thead>
-                <tr>
-                    <th>Имя</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                    <th>Univercity</th>
-                    <th>Faculty</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($data as $item)
-                    <tr>
-                        <td>{{ $item['name'] }}</td>
-                        <td>{{ $item['email'] }}</td>
-                        <td>{{ $item['age'] }}</td>
-                        <td>{{ $item['univercity'] }}</td>
-                        <td>{{ $item['faculty'] }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>Нет данных для отображения</p>
-    @endif
+    <tr>
+        <th>Имя</th>
+        <th>Email</th>
+        <th>Возраст</th>
+        <th>Университет</th>
+        <th>Факультет</th>
+        <th>Категория</th>
+        <th>Действия</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach($data as $student)
+        <tr>
+            <td>{{ $student->name }}</td>
+            <td>{{ $student->email }}</td>
+            <td>{{ $student->age }}</td>
+            <td>{{ $student->university }}</td>
+            <td>{{ $student->faculty }}</td>
+            <td>{{ $student->category->name }}</td>
+            <td>
+                <!-- Остальные действия (просмотр, редактирование, удаление) -->
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
+            </table>
+        @else
+            <p>Нет данных для отображения</p>
+        @endif
+    </div>
 @endsection
 
 
